@@ -4,7 +4,4 @@ python:
 install:
   - pip install -r requeriments.txt
 script:
-  - pytest
-branches:
-  only:
-    - master
+  - pytest -v --cov=./ --cov-report=xml
