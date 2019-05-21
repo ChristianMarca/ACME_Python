@@ -1,5 +1,8 @@
 # ACME Solution (Python Version)
 
+![alt text](https://codecov.io/gh/codecov/example-python/branch/master/graph/badge.svg)
+[](https://codecov.io/gh/codecov/example-python)
+
 >Calcular el total que la empresa debe pagar a un empleado, en función de las horas que trabajaron y los tiempos durante los cuales trabajaron.
 
 ### (Python)
