@@ -1,6 +1,7 @@
 # ACME Solution (Python Version)
 
 [![Build Status](https://travis-ci.org/ChristianMarca/ACME_Python.svg?branch=master)](https://travis-ci.org/ChristianMarca/ACME_Python)
+[![codecov](https://codecov.io/gh/ChristianMarca/ACME_Python/branch/master/graph/badge.svg)](https://codecov.io/gh/ChristianMarca/ACME_Python)
 
 >Calcular el total que la empresa debe pagar a un empleado, en función de las horas que trabajaron y los tiempos durante los cuales trabajaron.
 
