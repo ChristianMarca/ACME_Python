@@ -136,15 +136,22 @@ def test_isAtInvelidUpperLimit(utilsTime, time, constrains, expected):
 def test_paymentPerDay(utilsPayment, startHour, endHour, constrains, expected):
     assert utilsPayment._PaymentUtils__paymentPerDay(startHour, endHour, constrains) == expected
 
-# Calculate value to pay per day with valid hour
+# Calculate value to pay per day with valid hour two
 @pytest.mark.parametrize("startHour, endHour, constrains, expected",
                          [(
                             [10,30],
+                            [15,30],
+                            CONSTRAINS["TIME_WEEKEND"],
+                            100),
+                            (
                             [19,30],
+                            [8,30],
                             CONSTRAINS["TIME_WEEKDAY"],
-                            142.1)])
-def test_paymentValid(utilsPayment, startHour, endHour, constrains, expected):
+                            0
+                             )])
+def test_paymentPerDay(utilsPayment, startHour, endHour, constrains, expected):
     assert utilsPayment._PaymentUtils__paymentPerDay(startHour, endHour, constrains) == expected
+
 
 # Calculate value to pay per day with work hours between two constraints
 @pytest.mark.parametrize("startHour, endHour, constrains, expected",

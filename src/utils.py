@@ -14,7 +14,7 @@ class Utils:
             [data_output.append(info) for info in employeeInfo]
         return data_output
 
-    def getInfoFromFile(self,file):
+    def getInfoFromFile(self, file):
         employees_data = []
         file_data = open(file, "r").read().splitlines()
         for line in file_data:
