@@ -7,54 +7,54 @@ class PaymentUtils:
     def __init__(self):
         self.timeUtils = TimeUtils()
 
-    def __getConstrain(self, valueByDate, iteration):
+    def __get_constrain(self, value_by_date, iteration):
         if iteration == 2:
-            startHourShiftNext = valueByDate[0]["start"]
-            endHourShiftNext = valueByDate[1]["start"]
+            start_hour_shift_next = value_by_date[0]["start"]
+            end_hour_shift_next = value_by_date[1]["start"]
         else:
-            startHourShiftNext = valueByDate[iteration + 1]["start"]
-            endHourShiftNext = valueByDate[iteration+ + 1]["end"]
-        return [startHourShiftNext, endHourShiftNext]
+            start_hour_shift_next = value_by_date[iteration + 1]["start"]
+            end_hour_shift_next = value_by_date[iteration + 1]["end"]
+        return [start_hour_shift_next, end_hour_shift_next]
 
-    def __isWithinTheLimit(self, startHour, endHour):
-        lowerLimit = self.timeUtils.verifyHourLower(startHour[0], startHour[1])
-        upperLimit = self.timeUtils.verifyHourUpper(endHour[0], endHour[1])
-        return True if lowerLimit and upperLimit else False
+    def __is_within_the_limit(self, start_hour, end_hour):
+        lower_limit = self.timeUtils.verify_hour_lower(start_hour[0], start_hour[1])
+        upper_limit = self.timeUtils.verify_hour_upper(end_hour[0], end_hour[1])
+        return lower_limit and upper_limit
 
-    def __paymentPerDayWhenNotFound(self,startHour, endHour, valueByDate):
-        for i in range(0, len(valueByDate), 1):
-            startHourShift = valueByDate[i]["start"]
-            endHourShift = valueByDate[i]["end"]
+    def __payment_per_day_when_not_found(self, start_hour, end_hour, value_by_date):
+        for i in range(0, len(value_by_date), 1):
+            start_hour_shift = value_by_date[i]["start"]
+            end_hour_shift = value_by_date[i]["end"]
 
-            [startHourShiftNext, endHourShiftNext] = self.__getConstrain(valueByDate, i)
+            [start_hour_shift_next, end_hour_shift_next] = self.__get_constrain(value_by_date, i)
 
-            if self.__isWithinTheLimit([startHour, startHourShift], [endHour, endHourShiftNext]):
-                totalFirstTurn = self.__paymentPerDay(startHour, [endHourShift[0], endHourShift[1]], valueByDate)
-                totalSecondTurn = self.__paymentPerDay([startHourShiftNext[0], startHourShiftNext[1]], endHour, valueByDate)
-                return totalFirstTurn + totalSecondTurn
+            if self.__is_within_the_limit([start_hour, start_hour_shift], [end_hour, end_hour_shift_next]):
+                total_first_turn = self.__payment_per_day(start_hour, [end_hour_shift[0], end_hour_shift[1]], value_by_date)
+                total_second_turn = self.__payment_per_day([start_hour_shift_next[0], start_hour_shift_next[1]], end_hour, value_by_date)
+                return total_first_turn + total_second_turn
 
-    def __paymentPerDay(self,startHour, endHour, valueByDate):
+    def __payment_per_day(self, start_hour, end_hour, value_by_date):
 
-        isFound = False
-        amountToPay = 0
+        is_found = False
+        amount_to_pay = 0
 
-        for i in range(0, len(valueByDate),1):
-            startHourShift = valueByDate[i]["start"]
-            endHourShift = valueByDate[i]["end"]
+        for i in range(0, len(value_by_date), 1):
+            start_hour_shift = value_by_date[i]["start"]
+            end_hour_shift = value_by_date[i]["end"]
 
-            if self.__isWithinTheLimit([startHour, startHourShift], [endHour, endHourShift]):
-                time = self.timeUtils.calculateTime(startHour, endHour)
-                amountToPay = valueByDate[i]["USD"]*time
-                isFound = True
+            if self.__is_within_the_limit([start_hour, start_hour_shift], [end_hour, end_hour_shift]):
+                time = self.timeUtils.calculate_time(start_hour, end_hour)
+                amount_to_pay = value_by_date[i]["USD"]*time
+                is_found = True
 
-        return amountToPay if isFound else self.__paymentPerDayWhenNotFound(startHour, endHour, valueByDate)
+        return amount_to_pay if is_found else self.__payment_per_day_when_not_found(start_hour, end_hour, value_by_date)
 
-    def __calculateAmountToPay(self, name, employeeInfo):
+    def __calculate_amount_to_pay(self, name, employee_info):
         total = 0
-        for i in range(0, len(employeeInfo)-1, 5):
-            valueByDate = CONSTRAINS["TIME_WEEKDAY"] if (employeeInfo[i] in CONSTRAINS["WEEKDAY"]) else CONSTRAINS["TIME_WEEKEND"]
-            total += self.__paymentPerDay([employeeInfo[i + 1], employeeInfo[i + 2]], [employeeInfo[i + 3], employeeInfo[i + 4]], valueByDate)
+        for i in range(0, len(employee_info)-1, 5):
+            value_by_date = CONSTRAINS["TIME_WEEKDAY"] if (employee_info[i] in CONSTRAINS["WEEKDAY"]) else CONSTRAINS["TIME_WEEKEND"]
+            total += self.__payment_per_day([employee_info[i + 1], employee_info[i + 2]], [employee_info[i + 3], employee_info[i + 4]], value_by_date)
         return f'The amount to pay {name} is: {total} USD'
 
-    def getAmountsToPaid(self, name, data):
-        return list(map(lambda x: x(name, data), [self.__calculateAmountToPay]))
+    def get_amounts_to_paid(self, name, data):
+        return list(map(lambda x: x(name, data), [self.__calculate_amount_to_pay]))

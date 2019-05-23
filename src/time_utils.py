@@ -1,48 +1,56 @@
 class TimeUtils:
 
-    def __castToInt(self, arrayValue):
-        castItems = []
-        for item in arrayValue:
-            castItems.append(int(item))
-        return castItems
+    def __cast_to_int(self, array_value):
+        cast_items = []
+        for item in array_value:
+            cast_items.append(int(item))
+        return cast_items
 
-    def calculateTime(self, _startHour, _endHour):
+    def calculate_time(self, _start_hour, _end_hour):
 
-        [startHour, startMinute] = self.__castToInt(_startHour)
-        [endHour, endMinute] = self.__castToInt(_endHour)
+        [start_hour, start_minute] = self.__cast_to_int(_start_hour)
+        [end_hour, end_minute] = self.__cast_to_int(_end_hour)
 
-        if startHour >= 24 or endHour >= 24 or startMinute >= 60 or endMinute >= 60 or endHour < startHour:
+        if start_hour >= 24 or end_hour >= 24 or start_minute >= 60 or end_minute >= 60 or end_hour < start_hour:
             return 0
-        if startMinute > endMinute:
-            endHour -= 1
-            endMinute += 60
-        return round(float(endHour - startHour + (endMinute - startMinute) / 60.0), 2)
+        if start_minute > end_minute:
+            end_hour -= 1
+            end_minute += 60
+        return round(float(end_hour - start_hour + (end_minute - start_minute) / 60.0), 2)
 
-    def verifyHourLower(self,time, shift):
+    def __is_lower(self, minute, hour, shift_hour):
+        return not (minute and 0) if hour == shift_hour else True if hour > shift_hour else False
 
-        shiftHour = self.__castToInt(shift)[0]
-        [hour, minute] = self.__castToInt(time)
+    def __is_upper(self, minute, hour, shift_hour):
+        return not (minute and 0) if hour == shift_hour else True if hour > shift_hour else False
 
-        return (False if minute == 0 else True) if hour == shiftHour else True if hour > shiftHour else False
+    def verify_hour_lower(self, time, shift):
 
-        # if hour == shiftHour:
+        shift_hour = self.__cast_to_int(shift)[0]
+        [hour, minute] = self.__cast_to_int(time)
+
+        return self.__is_lower(minute, hour, shift_hour)
+
+        # if hour == shift_hour:
         #     return False if minute == 0 else True
-        # elif (hour > shiftHour):
+        # elif (hour > shift_hour):
         #     return True
         # else:
         #     return False
 
-    def verifyHourUpper(self, time, shift):
+    def verify_hour_upper(self, time, shift):
 
-        shiftHour = self.__castToInt(shift)[0]
-        [hour, minute] = self.__castToInt(time)
+        shift_hour = self.__cast_to_int(shift)[0]
+        [hour, minute] = self.__cast_to_int(time)
 
-        if hour == shiftHour:
+        # Actualizar con AND
+
+        if hour == shift_hour:
             return False if minute != 0 else True
-        elif shiftHour == 0:
+        elif shift_hour == 0:
             if hour < 24:
                 return True
-        elif hour < shiftHour:
+        elif hour < shift_hour:
             return True
         else:
             return False
