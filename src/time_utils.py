@@ -1,6 +1,7 @@
 class TimeUtils:
 
-    def __cast_to_int(self, array_value):
+    @staticmethod
+    def __cast_to_int(array_value):
         cast_items = []
         for item in array_value:
             cast_items.append(int(item))
@@ -18,10 +19,12 @@ class TimeUtils:
             end_minute += 60
         return round(float(end_hour - start_hour + (end_minute - start_minute) / 60.0), 2)
 
-    def __is_lower(self, minute, hour, shift_hour):
+    @staticmethod
+    def __is_lower(minute, hour, shift_hour):
         return not (minute and 0) if hour == shift_hour else True if hour > shift_hour else False
 
-    def __is_upper(self, minute, hour, shift_hour):
+    @staticmethod
+    def __is_upper(minute, hour, shift_hour):
         return not (minute and 0) if hour == shift_hour else True if hour > shift_hour else False
 
     def verify_hour_lower(self, time, shift):

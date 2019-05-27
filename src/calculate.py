@@ -23,6 +23,8 @@ class EmployeePayment:
         return self.__calculate_total_amount_to_pay(data)
 
 
-if __name__ == '__main__':
-    employeePayment = EmployeePayment("employees_data.txt")
-    print(employeePayment.calculate())
+# if __name__ == '__main__':
+#     employeePayment = EmployeePayment("employees_data.txt")
+#     data_with_info_to_paid = employeePayment.calculate()
+#     print(data_with_info_to_paid)
+

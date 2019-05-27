@@ -3,7 +3,8 @@ import re
 
 class Utils:
 
-    def __match_data(self, data):
+    @staticmethod
+    def __match_data(data):
         pattern = '([{[a-z]+|[^a-z]+],[0-9]+}|[^=,:-]+)'
         return re.findall(pattern, data, re.IGNORECASE)
 
@@ -13,9 +14,13 @@ class Utils:
             data_output.append(self.__match_data(i))
         return data_output
 
-    def get_info_from_file(self, file):
+    @staticmethod
+    def get_info_from_file(file):
         employees_data = []
-        file_data = open(file, "r").read().splitlines()
+        try:
+            file_data = open(file, "r").read().splitlines()
+        except IOError:
+            raise Exception("Archivo Invalido")
         for line in file_data:
             if len(line):
                 employees_data.append(line)

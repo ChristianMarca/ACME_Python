@@ -7,7 +7,8 @@ class PaymentUtils:
     def __init__(self):
         self.timeUtils = TimeUtils()
 
-    def __get_constrain(self, value_by_date, iteration):
+    @staticmethod
+    def __get_constrain(value_by_date, iteration):
         if iteration == 2:
             start_hour_shift_next = value_by_date[0]["start"]
             end_hour_shift_next = value_by_date[1]["start"]
@@ -53,7 +54,7 @@ class PaymentUtils:
         total = 0
         for i in range(0, len(employee_info)-1, 5):
             value_by_date = CONSTRAINS["TIME_WEEKDAY"] if (employee_info[i] in CONSTRAINS["WEEKDAY"]) else CONSTRAINS["TIME_WEEKEND"]
-            total += self.__payment_per_day([employee_info[i + 1], employee_info[i + 2]], [employee_info[i + 3], employee_info[i + 4]], value_by_date)
+            total += self.__payment_per_day(employee_info[i+1:i+3], employee_info[i+3:i+5], value_by_date)
         return f'The amount to pay {name} is: {total} USD'
 
     def get_amounts_to_paid(self, name, data):
