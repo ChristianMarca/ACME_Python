@@ -21,11 +21,17 @@ class TimeUtils:
 
     @staticmethod
     def __is_lower(minute, hour, shift_hour):
-        return not (minute and 0) if hour == shift_hour else True if hour > shift_hour else False
+        if hour == shift_hour:
+            return not (minute and 0)
+        return hour > shift_hour
 
     @staticmethod
     def __is_upper(minute, hour, shift_hour):
-        return not (minute and 0) if hour == shift_hour else True if hour > shift_hour else False
+        if hour == shift_hour:
+            return not (minute != 0)
+        if shift_hour == 0 and hour < 24:
+            return True
+        return True if hour < shift_hour else False
 
     def verify_hour_lower(self, time, shift):
 
@@ -34,26 +40,11 @@ class TimeUtils:
 
         return self.__is_lower(minute, hour, shift_hour)
 
-        # if hour == shift_hour:
-        #     return False if minute == 0 else True
-        # elif (hour > shift_hour):
-        #     return True
-        # else:
-        #     return False
-
     def verify_hour_upper(self, time, shift):
 
         shift_hour = self.__cast_to_int(shift)[0]
         [hour, minute] = self.__cast_to_int(time)
 
-        # Actualizar con AND
+        return self.__is_upper(minute, hour, shift_hour)
 
-        if hour == shift_hour:
-            return False if minute != 0 else True
-        elif shift_hour == 0:
-            if hour < 24:
-                return True
-        elif hour < shift_hour:
-            return True
-        else:
-            return False
+
